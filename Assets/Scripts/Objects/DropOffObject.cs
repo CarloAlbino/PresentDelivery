@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rigidbody))]
 public class DropOffObject : MonoBehaviour {
 
     [Range(1, 4)]
@@ -19,7 +19,11 @@ public class DropOffObject : MonoBehaviour {
     void Start ()
     {
         m_rb = GetComponent<Rigidbody>();
-        m_renderer = GetComponent<SpriteRenderer>();
+        m_renderer = GetComponentInChildren<SpriteRenderer>();
+        if(!m_renderer)
+        {
+            Debug.LogError("NO SPRITE RENDERER ATTACHED!");
+        }
 	}
 
 	void FixedUpdate ()
