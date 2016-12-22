@@ -9,7 +9,6 @@ public class Hit : AbstractBehaviour {
     private float m_currentInvincibilityTime = 2.0f;
     public int m_defaultLayer;
     public int m_hitLayer;
-    private bool m_isHit = false;
 
     void Update()
     {
@@ -27,8 +26,6 @@ public class Hit : AbstractBehaviour {
                 gameObject.layer = m_hitLayer;
                 m_rb.velocity = Vector3.zero;
                 m_rb.AddForce(Vector3.up * m_hitSpeed, ForceMode.Impulse);
-                m_isHit = true;
-                
             }
         }
 
