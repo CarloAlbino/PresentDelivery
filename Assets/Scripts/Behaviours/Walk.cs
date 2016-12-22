@@ -46,7 +46,7 @@ public class Walk : AbstractBehaviour {
                 newDirection += m_speed * transform.right;
             }
 
-            Debug.Log(gameObject.name + " " + newDirection);
+            //Debug.Log(gameObject.name + " " + newDirection);
 
             m_rb.velocity = newDirection;
         }
