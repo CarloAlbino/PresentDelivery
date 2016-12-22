@@ -6,7 +6,6 @@ public class Walk : AbstractBehaviour {
     public float m_speed = 50f;
     private float m_currentSpeed;
     private bool m_canWalk = true;
-    public int m_maxWeight = 10;
 
     void Start()
     {

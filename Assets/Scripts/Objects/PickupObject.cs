@@ -6,9 +6,9 @@ public class PickupObject : MonoBehaviour {
 
     // Make sure the 2 arrays match
     // Also make sure the rarest item is last
-    public InventoryObject[] items;
     // Calculate percentages between 0 and 1. The total of all percentages must be 1.  In the future find a way to automatically calculate this when moving sliders in the editor.
-    public float[] itemPercentage;
+    public InventoryObject[] items;
+    public GameObject m_visualComponent;
     private SpriteRenderer m_spriteRenderer;
     private InventoryObject m_currentItem;
 
@@ -20,15 +20,15 @@ public class PickupObject : MonoBehaviour {
 
 	void Start ()
     {
-        m_spriteRenderer = GetComponent<SpriteRenderer>();
+        m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         SwapItem();
     }
 
 	void Update ()
     {
-        if (transform.position.z < m_stopPosition.position.z)
+        if (m_visualComponent.transform.position.z < m_stopPosition.position.z)
         {
-            transform.Translate(Vector3.forward * m_moveSpeed * Time.deltaTime);
+            m_visualComponent.transform.Translate(Vector3.forward * m_moveSpeed * Time.deltaTime);
         }
         else
         {
@@ -40,12 +40,12 @@ public class PickupObject : MonoBehaviour {
     {
         float rand = Random.Range(0.0f, 1.0f);
 
-        for(int i = itemPercentage.Length; i > -1; i--)
+        for(int i = items.Length - 1; i > -1; i--)
         {
-            if(rand > itemPercentage[i])
+            if(rand > items[i].m_spawnPercentage)
             {
                 m_canPickup = false;
-                transform.position = m_startPosition.position;
+                m_visualComponent.transform.position = m_startPosition.position;
                 m_spriteRenderer.sprite = items[i].m_sprite;
                 m_currentItem = items[i];
                 break;

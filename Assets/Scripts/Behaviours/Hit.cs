@@ -26,6 +26,9 @@ public class Hit : AbstractBehaviour {
                 gameObject.layer = m_hitLayer;
                 m_rb.velocity = Vector3.zero;
                 m_rb.AddForce(Vector3.up * m_hitSpeed, ForceMode.Impulse);
+                // Empty inventory
+                // Add some items being thrown out for visual confirmation.
+                GetComponent<InventoryManager>().EmptyInventory();
             }
         }
 

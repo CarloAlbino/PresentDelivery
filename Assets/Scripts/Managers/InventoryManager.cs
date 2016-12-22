@@ -73,4 +73,11 @@ public class InventoryManager : MonoBehaviour {
         }
         m_playerWalk.SetSpeedByWeight(m_currentWeight);
     }
+
+    public void EmptyInventory()
+    {
+        m_heldItems.Clear();
+        m_currentWeight = 0;
+        m_playerWalk.SetSpeedByWeight(m_currentWeight);
+    }
 }
