@@ -9,6 +9,7 @@ public class TimeManager : MonoBehaviour {
     public int m_currentCountDown;
 
     private bool m_gameOver = true;
+    private bool m_showWinner = false;
 
 	void Start ()
     {
@@ -43,11 +44,24 @@ public class TimeManager : MonoBehaviour {
         else
         {
             m_gameOver = true;
+            StartCoroutine(ShowWinner());
         }
     }
 
     public bool IsGameOver()
     {
         return m_gameOver;
+    }
+
+    private IEnumerator ShowWinner()
+    {
+        // Should be dynamic based on how many presents left to deposit.
+        yield return new WaitForSeconds(5);
+        m_showWinner = true;
+    }
+
+    public bool CanShowWinner()
+    {
+        return m_showWinner;
     }
 }

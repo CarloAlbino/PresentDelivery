@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
     public void AddPoints(int player, int points, string itemName)
     {
         int playerNum = player - 1;
-        Debug.Log("P" + player + " points added " + points + " last item name " + m_lastItem[playerNum] + " itemName " + itemName);
+        //Debug.Log("P" + player + " points added " + points + " last item name " + m_lastItem[playerNum] + " itemName " + itemName);
         if(itemName == m_lastItem[playerNum] && m_currentMultiplier[playerNum] < m_maxMultiplier)
         {
             m_currentMultiplier[playerNum]++;

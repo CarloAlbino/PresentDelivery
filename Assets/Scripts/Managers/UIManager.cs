@@ -33,10 +33,57 @@ public class UIManager : MonoBehaviour {
             m_countDown.text = "SET.";
         else if (m_timeManager.m_currentTime > m_timeManager.m_gameTime - 1)
             m_countDown.text = "GO!";
+        else if (m_timeManager.CanShowWinner())
+            m_countDown.text = "The winner is " + GetWinner() + "! \n---\nPRESS SPACE TO CONTINUE";
         else if (m_timeManager.m_currentTime <= 0)
             m_countDown.text = "FINISH!";
         else
             m_countDown.text = "";
 	}
+
+    private string GetWinner()
+    {
+        string winner = "";
+        int topScore = -1;
+        int player = -1;
+        for(int i = 0; i < m_score.Length; i++)
+        {
+            if(m_gameManager.m_Points[i] > topScore)
+            {
+                topScore = m_gameManager.m_Points[i];
+                player = i;
+            }
+            else if(m_gameManager.m_Points[i] == topScore && player < 10)
+            {
+                player += i * 10;
+            }else if(m_gameManager.m_Points[i] == topScore && player < 100)
+            {
+                player += i * 100;
+            }
+            else if (m_gameManager.m_Points[i] == topScore && player < 1000)
+            {
+                player += i * 1000;
+            }
+        }
+
+        if(player > 1000)
+        {
+            winner = "Player 1, Player 2, Player 3 and Player 4";
+        }
+        else if(player > 100)
+        {
+            winner = "Player " + (player + 1).ToString()[2] + ", Player " + (player + 10).ToString()[1] + " and Player " + (player + 100).ToString()[0];
+        }
+        else if(player >= 10)
+        {
+            winner = "Player " + (player + 1).ToString()[1] + " and Player " + (player + 10).ToString()[0];
+        }
+        else
+        {
+            winner = "Player " + (player + 1).ToString();
+        }
+
+        return winner;
+    } 
 
 }

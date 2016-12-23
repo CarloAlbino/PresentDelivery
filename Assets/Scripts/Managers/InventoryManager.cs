@@ -33,6 +33,8 @@ public class InventoryManager : MonoBehaviour {
                         m_heldItems.Enqueue(pickup.GetItem());
                         pickup.SwapItem();
                         m_playerWalk.SetSpeedByWeight(m_currentWeight);
+                        transform.localScale = Vector3.one * (1.0f + (float)m_currentWeight / 25.0f);
+                        //Debug.Log("Current Weight: " + m_currentWeight +  " " + Vector3.one * (1.0f + (float)m_currentWeight / 25.0f));
                     }
                 }
             }
@@ -72,6 +74,7 @@ public class InventoryManager : MonoBehaviour {
             m_playerWalk.SetCanWalk(true);
         }
         m_playerWalk.SetSpeedByWeight(m_currentWeight);
+        transform.localScale = Vector3.one * (1.0f + (float)m_currentWeight / 25.0f);
     }
 
     public void EmptyInventory()
@@ -79,5 +82,6 @@ public class InventoryManager : MonoBehaviour {
         m_heldItems.Clear();
         m_currentWeight = 0;
         m_playerWalk.SetSpeedByWeight(m_currentWeight);
+        transform.localScale = Vector3.one * (1.0f + (float)m_currentWeight / 25.0f);
     }
 }
