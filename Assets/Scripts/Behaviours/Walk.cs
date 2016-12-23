@@ -7,12 +7,17 @@ public class Walk : AbstractBehaviour {
     private float m_currentSpeed;
     private bool m_canWalk = true;
 
+    private TimeManager m_timeManager;
+
     void Start()
     {
+        m_timeManager = FindObjectOfType<TimeManager>();
         m_currentSpeed = m_speed;
     }
 	
 	void FixedUpdate () {
+        m_canWalk = !m_timeManager.IsGameOver();
+
         if (m_canWalk)
         {
             m_rb.velocity = new Vector3(0, m_rb.velocity.y, 0);

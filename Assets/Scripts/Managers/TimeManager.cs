@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour {
     public int m_gameTime = 75;
-    private int m_currentTime;
+    public int m_currentTime;
     public int m_countDown = 3;
-    private int m_currentCountDown;
+    public int m_currentCountDown;
 
     private bool m_gameOver = true;
 
@@ -14,7 +14,8 @@ public class TimeManager : MonoBehaviour {
     {
         m_currentCountDown = m_countDown;
         m_currentTime = m_gameTime;
-	}
+        StartCoroutine(CountDown());
+    }
 
     private IEnumerator CountDown()
     {
@@ -43,5 +44,10 @@ public class TimeManager : MonoBehaviour {
         {
             m_gameOver = true;
         }
+    }
+
+    public bool IsGameOver()
+    {
+        return m_gameOver;
     }
 }
