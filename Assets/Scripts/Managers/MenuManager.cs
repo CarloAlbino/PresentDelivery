@@ -33,6 +33,10 @@ public class MenuManager : MonoBehaviour {
             {
                 GoToPanel(3);
             }
+            if(Input.GetKeyDown(KeyCode.Q))
+            {
+                QuitGame();
+            }
         }
         // In Instructions 1
         else if (m_currentPanel == 1)
@@ -68,6 +72,11 @@ public class MenuManager : MonoBehaviour {
     public void GoToLevel(int num)
     {
         SceneManager.LoadScene(num);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 
     public void GoToPanel(int num)
