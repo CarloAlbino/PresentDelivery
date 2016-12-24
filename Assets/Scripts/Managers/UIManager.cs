@@ -29,6 +29,8 @@ public class UIManager : MonoBehaviour {
 
         m_Time.text = m_timeManager.m_currentTime.ToString();
 
+
+
         // This if statement needs to be replaced with something better
 
         if (m_timeManager.m_currentCountDown > 1)
@@ -41,11 +43,11 @@ public class UIManager : MonoBehaviour {
             m_countDown.text = "SET.";
             m_audioManager.PlayCountDown(1);
         }
-        /*else if (m_timeManager.m_currentTime < m_timeManager.m_gameTime - 60 && m_timeManager.m_currentTime > m_timeManager.m_gameTime - 61)
+        else if (m_timeManager.m_currentTime == 15)
         {
             m_countDown.text = "HURRY UP!";
             m_audioManager.PlayCountDown(3);
-        }*/
+        }
         else if (m_timeManager.m_currentTime > m_timeManager.m_gameTime - 1)
         {
             m_countDown.text = "GO!";
@@ -55,7 +57,10 @@ public class UIManager : MonoBehaviour {
         else if (m_timeManager.CanShowWinner())
             m_countDown.text = "The winner is " + GetWinner() + "! \n---\nPRESS SPACE TO CONTINUE";
         else if (m_timeManager.m_currentTime <= 0)
+        {
             m_countDown.text = "FINISH!";
+            m_audioManager.PlayCountDown(4);
+        }
         else
         {
             m_countDown.text = "";

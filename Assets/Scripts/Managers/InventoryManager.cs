@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour {
 
@@ -9,15 +10,31 @@ public class InventoryManager : MonoBehaviour {
     public DropOffObject m_dropOffObject;
     public Transform m_dropOffPosition;
     private int m_currentWeight = 0;
-
+    public Text m_label;
+    private string m_defaultLabel;
+    //[SerializeField]
     private Walk m_playerWalk;
+    public GameObject m_droppedItems;
 
 	void Start ()
     {
         m_playerWalk = GetComponent<Walk>();
+        m_defaultLabel = m_label.text;
 	}
 
-    void OnTriggerEnter(Collider other)
+    void Update()
+    {
+        if(m_heldItems.Count == m_maxHeldItems)
+        {
+            m_label.text = "FULL\nv";
+        }
+        else
+        {
+            m_label.text = m_defaultLabel;
+        }
+    }
+
+    void OnTriggerStay(Collider other)
     {
         // Pick up items
         if (m_heldItems.Count < m_maxHeldItems)
@@ -39,12 +56,16 @@ public class InventoryManager : MonoBehaviour {
                 }
             }
         }
+    }
 
+    void OnTriggerEnter(Collider other)
+    { 
         // Drop off items
         if(m_heldItems.Count > 0)
         {
-            if(other.CompareTag("DropOff"))
+            if (other.CompareTag("DropOff"))
             {
+                m_playerWalk.SetCanWalk(false);
                 StartCoroutine(DropOff());
             }
         }
@@ -79,6 +100,8 @@ public class InventoryManager : MonoBehaviour {
 
     public void EmptyInventory()
     {
+        if (m_heldItems.Count > 0)
+            Instantiate(m_droppedItems, transform.position, Quaternion.identity);
         m_heldItems.Clear();
         m_currentWeight = 0;
         m_playerWalk.SetSpeedByWeight(m_currentWeight);

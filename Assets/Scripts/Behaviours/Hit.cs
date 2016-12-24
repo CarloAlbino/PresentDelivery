@@ -9,10 +9,24 @@ public class Hit : AbstractBehaviour {
     private float m_currentInvincibilityTime = 2.0f;
     public int m_defaultLayer;
     public int m_hitLayer;
+    private AudioSource m_audioSource;
+
+    void Start()
+    {
+        m_audioSource = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
         m_currentInvincibilityTime += Time.deltaTime;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Ground"))
+        {
+            gameObject.layer = m_defaultLayer;
+        }
     }
 
     void OnCollisionEnter(Collision other)
@@ -29,12 +43,13 @@ public class Hit : AbstractBehaviour {
                 // Empty inventory
                 // Add some items being thrown out for visual confirmation.
                 GetComponent<InventoryManager>().EmptyInventory();
+                m_audioSource.Play();
             }
         }
 
-        if(other.collider.CompareTag("Ground"))
+        /*if(other.collider.CompareTag("Ground"))
         {
             gameObject.layer = m_defaultLayer;
-        }
+        }*/
     }
 }

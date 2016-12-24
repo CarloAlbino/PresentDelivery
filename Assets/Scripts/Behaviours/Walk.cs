@@ -5,8 +5,8 @@ public class Walk : AbstractBehaviour {
 
     public float m_speed = 50f;
     private float m_currentSpeed;
+    //[SerializeField]
     private bool m_canWalk = true;
-
     private TimeManager m_timeManager;
 
     void Start()
@@ -16,63 +16,65 @@ public class Walk : AbstractBehaviour {
     }
 	
 	void FixedUpdate () {
-        m_canWalk = !m_timeManager.IsGameOver();
-
-        if (m_canWalk)
+        if (!m_timeManager.IsGameOver())
         {
-            m_rb.velocity = new Vector3(0, m_rb.velocity.y, 0);
-
-            // Always up, down, left right
-            bool up = m_inputState.GetButtonValue(m_inputButtons[0]);
-            bool down = m_inputState.GetButtonValue(m_inputButtons[1]);
-            bool left = m_inputState.GetButtonValue(m_inputButtons[2]);
-            bool right = m_inputState.GetButtonValue(m_inputButtons[3]);
-
-            //Debug.Log(up + " " + down + " " + left + " " + right);
-
-            // If there is a second up button add it to the fifth element.  Used in multiplayer
-            bool up2 = false;
-            if (m_inputButtons.Length > 4)
-                up2 = m_inputState.GetButtonValue(m_inputButtons[4]);
-
-            // Make sure the player can't walk when in the air
-            if (m_inputState.absVelY < 0.01f)
+            if (m_canWalk)
             {
-                Vector3 newDirection = Vector3.zero;
-                // Add force based on input
-                if (up || up2)
+                m_rb.velocity = new Vector3(0, m_rb.velocity.y, 0);
+
+                // Always up, down, left right
+                bool up = m_inputState.GetButtonValue(m_inputButtons[0]);
+                bool down = m_inputState.GetButtonValue(m_inputButtons[1]);
+                bool left = m_inputState.GetButtonValue(m_inputButtons[2]);
+                bool right = m_inputState.GetButtonValue(m_inputButtons[3]);
+
+                //Debug.Log(up + " " + down + " " + left + " " + right);
+
+                // If there is a second up button add it to the fifth element.  Used in multiplayer
+                bool up2 = false;
+                if (m_inputButtons.Length > 4)
+                    up2 = m_inputState.GetButtonValue(m_inputButtons[4]);
+
+                // Make sure the player can't walk when in the air
+                if (m_inputState.absVelY < 0.001f)
                 {
-                    newDirection += m_currentSpeed * transform.forward;
+                    Vector3 newDirection = Vector3.zero;
+                    // Add force based on input
+                    if (up || up2)
+                    {
+                        newDirection += m_currentSpeed * transform.forward;
+                    }
+
+                    if (down)
+                    {
+                        newDirection += m_currentSpeed * -transform.forward;
+                    }
+
+                    if (left)
+                    {
+                        newDirection += m_currentSpeed * -transform.right;
+                    }
+
+                    if (right)
+                    {
+                        newDirection += m_currentSpeed * transform.right;
+                    }
+
+                    //Debug.Log(gameObject.name + " " + newDirection);
+
+                    m_rb.velocity = newDirection;
                 }
-
-                if (down)
-                {
-                    newDirection += m_currentSpeed * -transform.forward;
-                }
-
-                if (left)
-                {
-                    newDirection += m_currentSpeed * -transform.right;
-                }
-
-                if (right)
-                {
-                    newDirection += m_currentSpeed * transform.right;
-                }
-
-                //Debug.Log(gameObject.name + " " + newDirection);
-
-                m_rb.velocity = newDirection;
             }
-        }
-        else
-        {
-            m_rb.velocity = new Vector3(0, m_rb.velocity.y, 0);
+            else
+            {
+                m_rb.velocity = new Vector3(0, m_rb.velocity.y, 0);
+            }
         }
     }
 
     public void SetCanWalk(bool b)
     {
+        //Debug.Log("Setting Can Walk to : " + b);
         m_canWalk = b;
     }
 

@@ -11,17 +11,22 @@ public class PickupObject : MonoBehaviour {
     public GameObject m_visualComponent;
     private SpriteRenderer m_spriteRenderer;
     private InventoryObject m_currentItem;
+    //private BoxCollider m_collider;
 
     public Transform m_stopPosition;
     public Transform m_startPosition;
     public float m_moveSpeed = 1.0f;
 
     private bool m_canPickup = false;
+    private AudioSource m_audioSource;
 
 	void Start ()
     {
+        m_audioSource = GetComponent<AudioSource>();
         m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        //m_collider = GetComponent<BoxCollider>();
         SwapItem();
+        m_audioSource.Stop();
     }
 
 	void Update ()
@@ -51,6 +56,7 @@ public class PickupObject : MonoBehaviour {
                 break;
             }
         }
+        m_audioSource.Play();
     }
 
     public InventoryObject GetItem()
