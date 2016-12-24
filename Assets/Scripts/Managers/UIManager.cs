@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour {
             m_audioManager.PlayBackgroundMusic();
         }
         else if (m_timeManager.CanShowWinner())
-            m_countDown.text = "The winner is " + GetWinner() + "! \n---\nPRESS SPACE TO CONTINUE";
+            m_countDown.text = "The winner is " + GetWinner() + "!\n---\nPRESS SPACE TO QUIT\nPRESS R to PLAY AGAIN";
         else if (m_timeManager.m_currentTime <= 0)
         {
             m_countDown.text = "FINISH!";

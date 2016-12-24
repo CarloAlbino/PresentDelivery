@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TimeManager : MonoBehaviour {
     public int m_gameTime = 75;
@@ -16,6 +17,21 @@ public class TimeManager : MonoBehaviour {
         m_currentCountDown = m_countDown;
         m_currentTime = m_gameTime;
         StartCoroutine(CountDown());
+    }
+
+    void Update()
+    {
+        if(m_gameOver && m_currentCountDown < 1)
+        {
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SceneManager.LoadScene(0);
+            }
+        }
     }
 
     private IEnumerator CountDown()
