@@ -1,9 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class InventoryManager : MonoBehaviour {
+public class InventoryManager : NetworkBehaviour {
 
     private Queue<InventoryObject> m_heldItems = new Queue<InventoryObject>();
     public int m_maxHeldItems = 5;
@@ -48,7 +49,7 @@ public class InventoryManager : MonoBehaviour {
                     {
                         m_currentWeight += pickup.GetItem().m_weight;
                         m_heldItems.Enqueue(pickup.GetItem());
-                        pickup.SwapItem();
+                        pickup.CmdSwapItem();
                         m_playerWalk.SetSpeedByWeight(m_currentWeight);
                         transform.localScale = Vector3.one * (1.0f + (float)m_currentWeight / 25.0f);
                         //Debug.Log("Current Weight: " + m_currentWeight +  " " + Vector3.one * (1.0f + (float)m_currentWeight / 25.0f));

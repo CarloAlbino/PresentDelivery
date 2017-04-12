@@ -1,8 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PickupObject : MonoBehaviour {
+public class PickupObject : NetworkBehaviour {
 
     // Make sure the 2 arrays match
     // Also make sure the rarest item is last
@@ -20,13 +21,19 @@ public class PickupObject : MonoBehaviour {
     private bool m_canPickup = false;
     private AudioSource m_audioSource;
 
+    // Networking
+    [SyncVar(hook = "SwapItem")]
+    public float randomItemPercentage = 0;
+
 	void Start ()
     {
         m_audioSource = GetComponent<AudioSource>();
         m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         //m_collider = GetComponent<BoxCollider>();
-        SwapItem();
+        if(isServer)
+            CmdSwapItem();
         m_audioSource.Stop();
+        
     }
 
 	void Update ()
@@ -41,13 +48,19 @@ public class PickupObject : MonoBehaviour {
         }
 	}
 
-    public void SwapItem()
+    [Command]
+    public void CmdSwapItem()
     {
-        float rand = Random.Range(0.0f, 1.0f);
+        //float rand = Random.Range(0.0f, 1.0f);
+
+        if(isServer)
+        {
+            randomItemPercentage = Random.Range(0.0f, 1.0f);
+        }
 
         for(int i = items.Length - 1; i > -1; i--)
         {
-            if(rand > items[i].m_spawnPercentage)
+            if(randomItemPercentage > items[i].m_spawnPercentage)
             {
                 m_canPickup = false;
                 m_visualComponent.transform.position = m_startPosition.position;
@@ -57,6 +70,26 @@ public class PickupObject : MonoBehaviour {
             }
         }
         m_audioSource.Play();
+    }
+
+    public void SwapItem(float rand)
+    {
+        if(isServer)
+        {
+            return;
+        }
+
+        for (int i = items.Length - 1; i > -1; i--)
+        {
+            if (rand > items[i].m_spawnPercentage)
+            {
+                m_canPickup = false;
+                m_visualComponent.transform.position = m_startPosition.position;
+                m_spriteRenderer.sprite = items[i].m_sprite;
+                m_currentItem = items[i];
+                break;
+            }
+        }
     }
 
     public InventoryObject GetItem()
