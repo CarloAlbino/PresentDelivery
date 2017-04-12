@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class NetworkPlayer : NetworkBehaviour {
 
-    public Color m_localPlayerColor;
+    public Material m_localPlayerColor;
 
 	void Start ()
     {
@@ -19,6 +20,8 @@ public class NetworkPlayer : NetworkBehaviour {
 
     public override void OnStartLocalPlayer()
     {
-        GetComponent<MeshRenderer>().material.color = m_localPlayerColor;
+        GetComponent<MeshRenderer>().material = m_localPlayerColor;
+        GetComponent<Walk>().isLocal = true;
+        GetComponentInChildren<Text>().text = "You\nv";
     }
 }
