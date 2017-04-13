@@ -24,4 +24,9 @@ public class NetworkPlayer : NetworkBehaviour {
         GetComponent<Walk>().isLocal = true;
         GetComponentInChildren<Text>().text = "You\nv";
     }
+
+    public uint GetPlayerNetID()
+    {
+        return netId.Value;
+    }
 }

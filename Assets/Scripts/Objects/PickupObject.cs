@@ -30,8 +30,14 @@ public class PickupObject : NetworkBehaviour {
         m_audioSource = GetComponent<AudioSource>();
         m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         //m_collider = GetComponent<BoxCollider>();
-        if(isServer)
+        if (isServer)
+        {
             CmdSwapItem();
+        }
+        else
+        {
+            SwapItem(randomItemPercentage);
+        }
         m_audioSource.Stop();
         
     }
