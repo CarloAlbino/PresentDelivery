@@ -12,6 +12,8 @@ public class NetworkScoreManager : NetworkBehaviour {
     public int sv_numOfPlayers = 0;
     [SyncVar]
     public SyncListInt sv_currentMultiplier = new SyncListInt();
+    [SyncVar]
+    public SyncListUInt sv_playerNetIDs = new SyncListUInt();
 
     private string m_lastItem = "";
     public int m_maxMultiplier = 5;
@@ -64,8 +66,9 @@ public class NetworkScoreManager : NetworkBehaviour {
         m_audioSource.Play();
     }
 
-    public NetworkServerCommands GetServerCommands()
+    [Command]
+    public void CmdNewPlayer(uint newId)
     {
-        return m_netServerCommands;
+        sv_playerNetIDs.Add(newId);
     }
 }

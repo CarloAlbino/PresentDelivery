@@ -7,6 +7,10 @@ using UnityEngine.UI;
 public class NetworkPlayer : NetworkBehaviour {
 
     public Material m_localPlayerColor;
+
+    public Material[] m_PlayerColors;
+
+    [SyncVar (hook = "ChangeColor")]
     public int m_playerNum = 0;
 
     private NetworkScoreManager m_netScoreManager;
@@ -19,7 +23,7 @@ public class NetworkPlayer : NetworkBehaviour {
     void Update ()
     {
 
-	}
+    }
 
     public override void OnStartClient()
     {
@@ -30,26 +34,51 @@ public class NetworkPlayer : NetworkBehaviour {
         // with a good connection everything should be fine.
         m_netScoreManager = FindObjectOfType<NetworkScoreManager>();
 
-        if (!hasAuthority)
+        if (!isLocalPlayer && isServer)
         {
-            m_playerNum = NetworkServer.connections.Count - 1;
+            // This is a replica on the server
             // Set the SyncVars
             m_netScoreManager.sv_numOfPlayers = NetworkServer.connections.Count;
             m_netScoreManager.sv_scores.Add(0);
             m_netScoreManager.sv_currentMultiplier.Add(1);
+
+            m_netScoreManager.sv_playerNetIDs.Add(netId.Value);
+            for (int i = 0; i < m_netScoreManager.sv_playerNetIDs.Count; i++)
+            {
+                if (m_netScoreManager.sv_playerNetIDs[i] == netId.Value)
+                {
+                    m_playerNum = i;
+                    break;
+                }
+            }
+
+            //GetComponent<MeshRenderer>().material = m_PlayerColors[m_netScoreManager.sv_numOfPlayers - 1];
+            Debug.Log("New PLayer spawned");
         }
+        //else
+        //{
+        //    // If a replica on the client side
+        //    GetComponent<MeshRenderer>().material = m_PlayerColors[m_playerNum];
+        //}
+
+        GetComponent<MeshRenderer>().material = m_PlayerColors[m_playerNum];
     }
 
     public override void OnStartLocalPlayer()
     {
-        GetComponent<MeshRenderer>().material = m_localPlayerColor;
-        GetComponent<Walk>().isLocal = true;
-        GetComponentInChildren<Text>().text = "You\nv";
-
-        if(m_netScoreManager == null)
+        if (m_netScoreManager == null)
         {
             m_netScoreManager = FindObjectOfType<NetworkScoreManager>();
         }
+
+        //GetComponent<MeshRenderer>().material = m_PlayerColors[m_playerNum];// m_localPlayerColor;
+        GetComponent<Walk>().isLocal = true;
+        GetComponentInChildren<Text>().text = "You\nv";
+    }
+
+    public void ChangeColor(int playerNum)
+    {
+        GetComponent<MeshRenderer>().material = m_PlayerColors[m_playerNum];
     }
 
     public uint GetPlayerNetID()
