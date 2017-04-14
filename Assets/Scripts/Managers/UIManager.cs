@@ -1,7 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 public class UIManager : MonoBehaviour {
 
@@ -13,18 +14,39 @@ public class UIManager : MonoBehaviour {
     private GameManager m_gameManager;
     private AudioManager m_audioManager;
 
+    public bool m_useNetwork = false;
+    private NetworkScoreManager m_netScoreManager;
+
 	void Start ()
     {
+        if (m_useNetwork)
+        {
+            m_netScoreManager = FindObjectOfType<NetworkScoreManager>();
+        }
+        else
+        {
+            m_gameManager = FindObjectOfType<GameManager>();
+        }
+
         m_timeManager = FindObjectOfType<TimeManager>();
-        m_gameManager = FindObjectOfType<GameManager>();
         m_audioManager = FindObjectOfType<AudioManager>();
 	}
 	
 	void Update ()
     {
-		for(int i = 0; i < m_score.Length; i++)
+        if (m_useNetwork)
         {
-            m_score[i].text = m_gameManager.m_Points[i].ToString();
+            for (int i = 0; i < m_netScoreManager.sv_numOfPlayers; i++)
+            {
+                m_score[i].text = m_netScoreManager.sv_scores[i].ToString();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < m_score.Length; i++)
+            {
+                m_score[i].text = m_gameManager.m_Points[i].ToString();
+            }
         }
 
         m_Time.text = m_timeManager.m_currentTime.ToString();
@@ -72,23 +94,51 @@ public class UIManager : MonoBehaviour {
         string winner = "";
         int topScore = -1;
         int player = -1;
-        for(int i = 0; i < m_score.Length; i++)
+
+        if (m_useNetwork)
         {
-            if(m_gameManager.m_Points[i] > topScore)
+            for (int i = 0; i < m_netScoreManager.sv_numOfPlayers; i++)
             {
-                topScore = m_gameManager.m_Points[i];
-                player = i;
+                if (m_netScoreManager.sv_scores[i] > topScore)
+                {
+                    topScore = m_netScoreManager.sv_scores[i];
+                    player = i;
+                }
+                else if (m_netScoreManager.sv_scores[i] == topScore && player < 10)
+                {
+                    player += i * 10;
+                }
+                else if (m_netScoreManager.sv_scores[i] == topScore && player < 100)
+                {
+                    player += i * 100;
+                }
+                else if (m_netScoreManager.sv_scores[i] == topScore && player < 1000)
+                {
+                    player += i * 1000;
+                }
             }
-            else if(m_gameManager.m_Points[i] == topScore && player < 10)
+        }
+        else
+        {
+            for (int i = 0; i < m_score.Length; i++)
             {
-                player += i * 10;
-            }else if(m_gameManager.m_Points[i] == topScore && player < 100)
-            {
-                player += i * 100;
-            }
-            else if (m_gameManager.m_Points[i] == topScore && player < 1000)
-            {
-                player += i * 1000;
+                if (m_gameManager.m_Points[i] > topScore)
+                {
+                    topScore = m_gameManager.m_Points[i];
+                    player = i;
+                }
+                else if (m_gameManager.m_Points[i] == topScore && player < 10)
+                {
+                    player += i * 10;
+                }
+                else if (m_gameManager.m_Points[i] == topScore && player < 100)
+                {
+                    player += i * 100;
+                }
+                else if (m_gameManager.m_Points[i] == topScore && player < 1000)
+                {
+                    player += i * 1000;
+                }
             }
         }
 

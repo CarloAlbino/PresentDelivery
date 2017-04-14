@@ -1,6 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(Rigidbody))]
 public class DropOffObject : MonoBehaviour {
@@ -21,6 +22,10 @@ public class DropOffObject : MonoBehaviour {
     private string m_name = " ";
     private GameManager m_gameManager;
 
+    public bool m_useNetwork = false;
+    public int m_localPlayerNum;
+    private NetworkScoreManager m_netScoreManager; 
+
     void Start ()
     {
         m_rb = GetComponent<Rigidbody>();
@@ -29,7 +34,16 @@ public class DropOffObject : MonoBehaviour {
         {
             Debug.LogError("NO SPRITE RENDERER ATTACHED!");
         }
-        m_gameManager = FindObjectOfType<GameManager>();
+
+        if(m_useNetwork)
+        {
+            // Get reference to the network score manager
+            m_netScoreManager = FindObjectOfType<NetworkScoreManager>();
+        }
+        else
+        {
+            m_gameManager = FindObjectOfType<GameManager>();
+        }
 	}
 
 	void FixedUpdate ()
@@ -43,7 +57,20 @@ public class DropOffObject : MonoBehaviour {
         // When colliding with the destination the points should be calculated and destroyed
         if(other.CompareTag("Destination"))
         {
-            m_gameManager.AddPoints(m_sentByPlayer, m_points, m_name);
+            Debug.Log("Hit Destination Collider");
+            if (m_useNetwork)
+            {
+                if (NetworkServer.active)
+                {
+                    Debug.Log("Hit Destination Collider Networked!");
+                    m_netScoreManager.AddPoints(m_localPlayerNum, m_points, m_name);
+                }
+            }
+            else
+            {
+                m_gameManager.AddPoints(m_sentByPlayer, m_points, m_name);
+            }
+
             Destroy(this.gameObject);
         }
     }
