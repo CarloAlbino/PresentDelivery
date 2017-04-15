@@ -1,0 +1,15 @@
+Other scripts that connect to or have relations to networking that are not in the Networking scripts folder:
+
+Walk,
+InventoryManager,
+TimeManager, 
+UIManager,
+DropOffObject,
+ObstacleLauncher,
+PickupObject
+
+
+Prefabs that have network connections that are not in the Networking prefabs folder:
+
+ObstacleLauncherLeft
+ObstacleLauncherRight

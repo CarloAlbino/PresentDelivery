@@ -5,15 +5,22 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 
 public class TimeManager : NetworkBehaviour {
+    // NOTE: All time synched vars get synchronised automatically by Unity's Networking Manager
+    // Max game time
     public int m_gameTime = 75;
+    // Current game time shared from the server/host to all clients
     [SyncVar]
     public int m_currentTime;
+    // Max countdown time
     public int m_countDown = 3;
+    // Current countdown time shared from the server/host to all clients
     [SyncVar]
     public int m_currentCountDown;
 
+    // Is the game over
     [SyncVar]
     private bool m_gameOver = true;
+    // Should the winner be displayed
     [SyncVar]
     private bool m_showWinner = false;
 
@@ -25,21 +32,23 @@ public class TimeManager : NetworkBehaviour {
 
     void Update()
     {
-        if(m_gameOver && m_currentCountDown < 1)
-        {
-            if(Input.GetKeyDown(KeyCode.R))
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SceneManager.LoadScene(0);
-            }
-        }
+        //if(m_gameOver && m_currentCountDown < 1)
+        //{
+        //    if(Input.GetKeyDown(KeyCode.R))
+        //    {
+        //        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //    }
+        //    if (Input.GetKeyDown(KeyCode.Space))
+        //    {
+        //        SceneManager.LoadScene(0);
+        //    }
+        //}
     }
 
+    // Called via a button on canvas
     public void Button_StartGame()
     {
+        // Start the game if called on the server
         if (isServer)
             StartCoroutine(CountDown());
     }

@@ -38,6 +38,7 @@ public class UIManager : MonoBehaviour {
         {
             for (int i = 0; i < m_netScoreManager.sv_numOfPlayers; i++)
             {
+                // Display the score from the synched vars
                 m_score[i].text = m_netScoreManager.sv_scores[i].ToString();
             }
         }
@@ -77,7 +78,7 @@ public class UIManager : MonoBehaviour {
             m_audioManager.PlayBackgroundMusic();
         }
         else if (m_timeManager.CanShowWinner())
-            m_countDown.text = "The winner is " + GetWinner() + "!\n---\nPRESS SPACE TO QUIT\nPRESS R to PLAY AGAIN";
+            m_countDown.text = "The winner is " + GetWinner() + "!\n---\nPRESS Q TO QUIT";//SPACE TO QUIT\nPRESS R to PLAY AGAIN";
         else if (m_timeManager.m_currentTime <= 0)
         {
             m_countDown.text = "FINISH!";
@@ -97,6 +98,7 @@ public class UIManager : MonoBehaviour {
 
         if (m_useNetwork)
         {
+            // Check who won, this is done locally
             for (int i = 0; i < m_netScoreManager.sv_numOfPlayers; i++)
             {
                 if (m_netScoreManager.sv_scores[i] > topScore)

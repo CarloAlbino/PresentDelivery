@@ -4,7 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
-public class NetworkLobbyControls : MonoBehaviour {
+public class NetworkLobbyControls : MonoBehaviour
+{
+
+    /////////////////////////////////////////////////
+    // NOTE: NOT USED
+    //       Tried something, didn't work
+    //
+    //          - Carlo (April 14, 2017)
+    /////////////////////////////////////////////////
+
 
     private NetworkManager m_netManager;
     public Text m_ipAddressDisplay;

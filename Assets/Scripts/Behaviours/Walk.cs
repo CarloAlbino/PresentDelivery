@@ -18,9 +18,9 @@ public class Walk : AbstractBehaviour {
     }
 	
 	void FixedUpdate () {
-        if (isLocal)
+        if (isLocal)    // Walk if the player is local
         {
-            if (!m_timeManager.IsGameOver())
+            if (!m_timeManager.IsGameOver())    // Walk if the game is not over (or started)
             {
                 if (m_canWalk)
                 {
