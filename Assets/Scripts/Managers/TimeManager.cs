@@ -21,8 +21,6 @@ public class TimeManager : NetworkBehaviour {
     {
         m_currentCountDown = m_countDown;
         m_currentTime = m_gameTime;
-        if(isServer)
-            StartCoroutine(CountDown());
     }
 
     void Update()
@@ -38,6 +36,12 @@ public class TimeManager : NetworkBehaviour {
                 SceneManager.LoadScene(0);
             }
         }
+    }
+
+    public void Button_StartGame()
+    {
+        if (isServer)
+            StartCoroutine(CountDown());
     }
 
     private IEnumerator CountDown()

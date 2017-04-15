@@ -23,7 +23,6 @@ public class NetworkScoreManager : NetworkBehaviour {
     void Start ()
     {
         m_audioSource = GetComponent<AudioSource>();
-
     }
 
     void Update ()

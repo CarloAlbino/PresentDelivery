@@ -21,13 +21,30 @@ public class NetworkGameStart : NetworkBehaviour {
 
 	void Update ()
     {
-        if (!m_startGameCanvas.activeInHierarchy)
+        if (!m_startGame)
+        {
+            if (!m_startGameCanvas.activeInHierarchy)
+            {
+                if (isServer)
+                {
+                    m_startGameCanvas.SetActive(true);
+                }
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q))
         {
             if (isServer)
             {
-                m_startGameCanvas.SetActive(true);
-                m_ipDisplay.text = Network.player.ipAddress;
+                NetworkServer.DisconnectAll();
+                m_netManager.StopServer();
+                Application.LoadLevel(0);
             }
+        }
+
+        if(!NetworkClient.active)
+        {
+            Application.LoadLevel(0);
         }
 	}
 
