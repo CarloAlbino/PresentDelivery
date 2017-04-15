@@ -38,12 +38,11 @@ public class NetworkGameStart : NetworkBehaviour {
             {
                 NetworkServer.DisconnectAll();
                 m_netManager.StopServer();
-                Application.LoadLevel(0);
             }
-        }
-
-        if(!NetworkClient.active)
-        {
+            else if(isClient)
+            { 
+                Network.Disconnect();
+            }
             Application.LoadLevel(0);
         }
 	}
