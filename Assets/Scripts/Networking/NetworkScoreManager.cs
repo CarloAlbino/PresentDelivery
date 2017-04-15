@@ -23,10 +23,12 @@ public class NetworkScoreManager : NetworkBehaviour {
     void Start ()
     {
         m_audioSource = GetComponent<AudioSource>();
+
     }
 
     void Update ()
     {
+        Debug.Log(Network.player.ipAddress);
         for (int i = 0; i < sv_numOfPlayers; i++)
         {
             if (sv_currentMultiplier[i] > 1)
