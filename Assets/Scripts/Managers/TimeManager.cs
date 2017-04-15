@@ -1,22 +1,28 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
-public class TimeManager : MonoBehaviour {
+public class TimeManager : NetworkBehaviour {
     public int m_gameTime = 75;
+    [SyncVar]
     public int m_currentTime;
     public int m_countDown = 3;
+    [SyncVar]
     public int m_currentCountDown;
 
+    [SyncVar]
     private bool m_gameOver = true;
+    [SyncVar]
     private bool m_showWinner = false;
 
 	void Start ()
     {
         m_currentCountDown = m_countDown;
         m_currentTime = m_gameTime;
-        StartCoroutine(CountDown());
+        if(isServer)
+            StartCoroutine(CountDown());
     }
 
     void Update()

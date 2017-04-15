@@ -19,8 +19,6 @@ public class NetworkScoreManager : NetworkBehaviour {
     public int m_maxMultiplier = 5;
     public Text[] m_multiplierText = new Text[4];
     private AudioSource m_audioSource;
-    [SerializeField]
-    private NetworkServerCommands m_netServerCommands;
     
     void Start ()
     {
