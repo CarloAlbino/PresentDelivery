@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,15 +16,18 @@ public class AudioManager : MonoBehaviour {
 
     public void PlayCountDown(int i)
     {
-        if (m_audioSource.clip != m_coutdownClips[i])
+        if (m_audioSource != null)
         {
-            m_audioSource.clip = m_coutdownClips[i];
-            m_audioSource.Play();
-
-            /*if (i == 2)
+            if (m_audioSource.clip != m_coutdownClips[i])
             {
-                StartCoroutine(PlayBackgroundMusic());
-            }*/
+                m_audioSource.clip = m_coutdownClips[i];
+                m_audioSource.Play();
+
+                /*if (i == 2)
+                {
+                    StartCoroutine(PlayBackgroundMusic());
+                }*/
+            }
         }
 
     }

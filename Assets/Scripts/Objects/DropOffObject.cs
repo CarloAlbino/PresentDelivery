@@ -57,12 +57,12 @@ public class DropOffObject : MonoBehaviour {
         // When colliding with the destination the points should be calculated and destroyed
         if(other.CompareTag("Destination"))
         {
-            Debug.Log("Hit Destination Collider");
+            //Debug.Log("Hit Destination Collider");
             if (m_useNetwork)
             {
                 if (NetworkServer.active)
                 {
-                    Debug.Log("Hit Destination Collider Networked!");
+                    //Debug.Log("Hit Destination Collider Networked!");
                     m_netScoreManager.AddPoints(m_localPlayerNum, m_points, m_name);
                 }
             }
